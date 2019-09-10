@@ -28,17 +28,17 @@ strat.log = function () {
 // update or not.
 strat.check = function (candle) {
   if (watchPrice === 0) {
-    watchPrice = candle.close * 0.97;
+    watchPrice = candle.close * this.settings.low;
   }
   if (candle.close <= watchPrice) {
     lowestPrice = candle.close;
   }
   if (candle.close > lowestPrice && !adviced) {
     this.advice("long");
-    sellPrice = candle.close * 1.05;
+    sellPrice = candle.close * this.settings.high;
     adviced = true;
   }
-  if(candle.close > sellPrice && watchPrice !== 0 && lowestPrice !== 0){
+  if(candle.close >= sellPrice && watchPrice !== 0 && lowestPrice !== 0){
     this.advice("short");
     watchPrice = 0.0;
     lowestPrice = 0.0;
